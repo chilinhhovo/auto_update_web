@@ -28,8 +28,7 @@ jobs:
     - name: Install all necessary packages
       run: pip install jupyter lxml pandas requests beautifulsoup4 html5lib
     - name: Scraping today's data
-      run: jupyter nbconvert --to notebook --execute "02 - Scraping - Texas Cosmetology Violations.ipynb
-.ipynb" --stdout
+      run: jupyter nbconvert --to notebook --execute "scrape.ipynb" --stdout
     - name: Commit and push any changes
       run: |-
         git config user.name "Automated"
