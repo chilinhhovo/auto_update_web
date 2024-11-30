@@ -30,7 +30,7 @@ jobs:
     - name: Install browsers
       run: playwright install
     - name: Scraping today's data
-      run: jupyter nbconvert --to notebook --execute "scrape.ipynb" --stdout
+      run: jupyter nbconvert --to notebook --execute "Manhattan_CB1.ipynb" --stdout
     - name: Commit and push any changes
       run: |-
         git config user.name "Automated"
