@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manhattan Community Board 1</title>
+    <title>Manhattan Community Board 4</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css">
     <style>
         body {
@@ -96,7 +96,7 @@
 <body>
     <div id="content">
         <img src="{{ url_for('static', filename='images/whosaidwhatlogo.png') }}" alt="Logo" class="logo">
-        <h1>Manhattan Community Board 1</h1>
+        <h1>Manhattan Community Board 4</h1>
         <h3>Not all community board minutes are available because community board did not publish that monthly</h3>
         <h4> Each community board minute has a meeting summary and a voting summary powered by GPT</h4>
         {% for year, records in grouped_data.items() %}
@@ -133,9 +133,9 @@
             .then(data => {
                 console.log('GeoJSON loaded:', data); // Log the data
 
-                // Find the feature with boro_cd: "101"
+                // Find the feature with boro_cd: "104"
                 const targetFeature = data.features.find(
-                    feature => feature.properties && feature.properties.boro_cd === "101"
+                    feature => feature.properties && feature.properties.boro_cd === "104"
                 );
 
                 if (targetFeature) {
@@ -160,7 +160,7 @@
                         ).addTo(map);
                     }
                 } else {
-                    console.error('Feature with boro_cd: "101" not found.');
+                    console.error('Feature with boro_cd: "104" not found.');
                 }
             })
             .catch(error => console.error('Error loading GeoJSON:', error));
