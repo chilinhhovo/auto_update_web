@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting in {{ month }} {{ year }}</title>
+    <style>
+        @font-face {
+            font-family: 'AeonikTRIAL';
+            src: url('{{ url_for('static', filename='fonts/AeonikTRIAL-Regular.woff2') }}') format('woff2'),
+                 url('{{ url_for('static', filename='fonts/AeonikTRIAL-Regular.woff') }}') format('woff'),
+                 url('{{ url_for('static', filename='fonts/AeonikTRIAL-Regular.ttf') }}') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: 'AeonikTRIAL', sans-serif;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        .button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            font-size: 14px;
+            color: white;
+            background-color: #007bff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .content {
+            margin-top: 20px;
+        }
+
+        .content p {
+            margin: 0 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <a href="/month/{{ year }}/{{ month }}" class="button">Back to Previous Page</a>
+    <h1>Voting Decisions for {{ month }} {{ year }}</h1>
+    <div class="content">
+        {% if vote_list %}
+            {% for vote in vote_list %}
+                <p>{{ loop.index }}. {{ vote }}</p>
+            {% endfor %}
+        {% else %}
+            <p>No voting decisions were recorded for {{ month }} {{ year }}.</p>
+        {% endif %}
+    </div>
+    <a href="/" class="button">Back to Main Page</a>
+</body>
+</html>
