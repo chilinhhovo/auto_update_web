@@ -19,29 +19,36 @@ jobs:
           - Manhattan_CB2/Manhattan_CB2.ipynb
           - Manhattan_CB4/Manhattan_CB4.ipynb
     steps:
-    - name: Check out this repo
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - name: Debug: List all files
-      run: ls -R
-    - name: Debug: List specific notebook directory
-      run: ls -R ${{ matrix.notebook }}
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.10'
-    - name: Install all necessary packages
-      run: pip install jupyter lxml pandas requests beautifulsoup4 html5lib playwright pdfminer.six
-    - name: Install browsers
-      run: playwright install
-    - name: Execute notebook
-      run: jupyter nbconvert --to notebook --execute "${{ matrix.notebook }}" --stdout
-    - name: Commit and push any changes
-      run: |-
-        git config user.name "Automated"
-        git config user.email "actions@users.noreply.github.com"
-        git add -A
-        timestamp=$(date -u)
-        git commit -m "Latest data: ${timestamp}" || exit 0
-        git push
+      - name: Check out this repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Debug: List all files
+        run: ls -R
+
+      - name: Debug: List specific notebook directory
+        run: echo "${{ matrix.notebook }}" && ls -R $(dirname "${{ matrix.notebook }}")
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+
+      - name: Install all necessary packages
+        run: pip install jupyter lxml pandas requests beautifulsoup4 html5lib playwright pdfminer.six
+
+      - name: Install browsers
+        run: playwright install
+
+      - name: Execute notebook
+        run: jupyter nbconvert --to notebook --execute "${{ matrix.notebook }}" --stdout
+
+      - name: Commit and push any changes
+        run: |-
+          git config user.name "Automated"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          timestamp=$(date -u)
+          git commit -m "Latest data: ${timestamp}" || exit 0
+          git push
