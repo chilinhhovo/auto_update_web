@@ -29,7 +29,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 app = Flask(__name__)
 
 # Load the CSV data
-csv_path = "Manhattan_CB1_with_content.csv"
+csv_path = "Manhattan_CB1/Manhattan_CB1.csv"
 try:
     data = pd.read_csv(csv_path)
 except Exception as e:
