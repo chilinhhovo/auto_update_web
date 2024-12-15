@@ -26,7 +26,7 @@ jobs:
       with:
         python-version: '3.10'
     - name: Install all necessary packages
-      run: pip install jupyter lxml pandas requests beautifulsoup4 html5lib playwright pdfminer.six pdfplumber ocrmypdf PyPDF2
+      run: pip install jupyter lxml pandas requests beautifulsoup4 html5lib playwright pdfminer.six pdfplumber ocrmypdf PyPDF2 python-doctr[torch] google-cloud-vision pytesseract 
     - name: Install browsers
       run: playwright install
     - name: Scraping today's data
@@ -35,8 +35,6 @@ jobs:
       run: jupyter nbconvert --to notebook --execute "Manhattan_CB4/Manhattan_CB4.ipynb" --stdout
     - name: Scraping today's data
       run: jupyter nbconvert --to notebook --execute "Manhattan_CB1/Manhattan_CB1_copy.ipynb" --stdout
-    - name: Scraping today's data
-      run: jupyter nbconvert --to notebook --execute "Bronx_CB1/Bronx_CB1.ipynb" --stdout
     - name: Commit and push any changes
       run: |-
         git config user.name "Automated"
