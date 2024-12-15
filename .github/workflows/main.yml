@@ -1,5 +1,5 @@
 # You can name this whatever you want
-name: update
+name: update_Man_CB2
 
 # You will get an error on the automatic updates committing
 # if you do not have this line
@@ -26,11 +26,11 @@ jobs:
       with:
         python-version: '3.10'
     - name: Install all necessary packages
-      run: pip install jupyter lxml pandas requests beautifulsoup4 html5lib playwright pdfminer.six pdfplumber
+      run: pip install jupyter lxml pandas requests beautifulsoup4 html5lib playwright pdfminer.six pdfplumber ocrmypdf PyPDF2
     - name: Install browsers
       run: playwright install
     - name: Scraping today's data
-      run: jupyter nbconvert --to notebook --execute "Manhattan_CB1/Manhattan_CB1_copy.ipynb" --stdout
+      run: jupyter nbconvert --to notebook --execute "Manhattan_CB2/Manhattan_CB2.ipynb" --stdout
     - name: Commit and push any changes
       run: |-
         git config user.name "Automated"
