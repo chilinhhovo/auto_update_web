@@ -14,13 +14,19 @@ jobs:
     strategy:
       matrix:
         notebook:
-          - auto_update_web/Manhattan_CB1/Manhattan_CB1_copy.ipynb
-          - auto_update_web/Manhattan_CB2/Manhattan_CB2.ipynb
-          - auto_update_web/Manhattan_CB4/Manhattan_CB4.ipynb
-          - auto_update_web/Bronx_CB1/Bronx_CB1.ipynb
+          - Bronx_CB1/Bronx_CB1.ipynb
+          - Manhattan_CB1/Manhattan_CB1 copy.ipynb
+          - Manhattan_CB2/Manhattan_CB2.ipynb
+          - Manhattan_CB4/Manhattan_CB4.ipynb
     steps:
     - name: Check out this repo
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Debug: List all files
+      run: ls -R
+    - name: Debug: List specific notebook directory
+      run: ls -R ${{ matrix.notebook }}
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
