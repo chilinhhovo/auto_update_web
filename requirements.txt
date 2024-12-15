@@ -16,3 +16,4 @@ beautifulsoup4
 html5lib
 lxml
 playwright
+openai
