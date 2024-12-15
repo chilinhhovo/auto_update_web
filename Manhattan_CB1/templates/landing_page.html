@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Boards</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            margin: 0;
+        }
+        h1 {
+            margin-bottom: 40px;
+            margin-left: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-left: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        a {
+            text-decoration: none;
+            color: blue;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        #map {
+            height: 100vh; /* Full height */
+            width: 45%; /* Half the screen */
+            position: fixed;
+            right: 0;
+            top: 0;
+        }
+        .back-button {
+            position: fixed; /* Make the button stay in a fixed position */
+            bottom: 20px; /* Place the button at the bottom of the viewport */
+            right: 20px; /* Place the button on the right side of the viewport */
+            display: inline-block;
+            padding: 10px 15px;
+            font-size: 14px;
+            color: white;
+            background-color: #007bff;
+            text-decoration: none;
+            border-radius: 5px;
+            z-index: 1000; /* Ensure it stays on top of other elements */
+        }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Community Boards</h1>
+        <ul>
+            {% for board in community_boards %}
+                <li><a href="{{ board.link }}">{{ board.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="map"></div>
+    <div><a href="/" class="back-button">Back to Top</a></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <script>
+        // Initialize the map
+        var map = L.map('map').setView([40.7128, -74.0060], 10); // Centered on NYC and changed zoom to fit NYC in the box 
+
+        // Add a tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Load GeoJSON data
+        fetch('/geojson')
+            .then(response => response.json())
+            .then(data => {
+                console.log('GeoJSON loaded:', data); // Log the data
+
+                // Loop through all features and display their polygons
+                L.geoJSON(data, {
+                    style: {
+                        color: 'orange',
+                        weight: 2
+                    }
+                }).addTo(map);
+            })
+            .catch(error => console.error('Error loading GeoJSON:', error));
+    </script>
+</body>
+</html>

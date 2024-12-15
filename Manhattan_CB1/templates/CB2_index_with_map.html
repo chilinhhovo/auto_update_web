@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manhattan Community Board 2</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css">
+    <style>
+        body {
+            display: flex;
+            margin: 0;
+            font-family: AeonikTRIAL, sans-serif;
+        }
+        h3 {
+            font-size: 0.9em;
+            color: #888;
+            margin-bottom: 20px;
+            margin-right: 30px;
+            margin-left: 30px;
+        }
+
+        h4 {
+            font-size: 0.9em;
+            font-weight: lighter;
+            color: #888;
+            margin-bottom: 20px;
+            margin-right: 30px;
+            margin-left: 30px;
+        }
+        #content {
+            width: 50%;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        #map {
+            height: 100vh; /* Full height */
+            width: 45%; /* Half the screen */
+            position: fixed;
+            margin-top: 156px;
+            margin-right:20px ;
+            right: 0;
+            top: 0;
+        }
+        h1 {
+            margin-top: 0;
+            margin-left: 30px;
+        }
+        .logo {
+            display: block;
+            width: 200px; /* Set the logo width */
+            text-align: left;
+            margin-left: 30px;
+            margin-bottom: 10px;
+        }
+        .year-group {
+            margin-bottom: 10px;
+            margin-left: 30px;
+        }
+        ul {
+            list-style-type: none; /* Remove bullet points */
+            padding: 0;
+        }
+        .month-entry {
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ccc; /* Add a thin line between links */
+            border-bottom-: 10px;
+            width: 50%; /* Line width set to half of the container width */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .month-entry a {
+            text-decoration: none;
+            color: blue;
+        }
+        .month-entry a:hover {
+            text-decoration: underline;
+        }
+        .back-button {
+            position: fixed; /* Make the button stay in a fixed position */
+            bottom: 20px; /* Place the button at the bottom of the viewport */
+            right: 20px; /* Place the button on the right side of the viewport */
+            display: inline-block;
+            padding: 10px 15px;
+            font-size: 14px;
+            color: white;
+            background-color: #007bff;
+            text-decoration: none;
+            border-radius: 5px;
+            z-index: 1000; /* Ensure it stays on top of other elements */
+        }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="content">
+        <img src="{{ url_for('static', filename='images/whosaidwhatlogo.png') }}" alt="Logo" class="logo">
+        <h1>Manhattan Community Board 2</h1>
+        <h3>Minutes and summaries for Manhattan Community Board 2</h3>
+        <h3>Not all community board minutes are available because community board did not publish that monthly.</h3>
+        <h4>Each community board minute has a meeting summary and a voting summary powered by GPT.</h4>
+        {% for year, records in grouped_data.items() %}
+            <div class="year-group">
+                <h2>{{ year }}</h2>
+                <ul>
+                    {% for record in records %}
+                        <li class="month-entry">
+                            <a href="/{{ board_id }}/month/{{ year }}/{{ record.Month_Name }}">{{ record.Month_Name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <div id="map"></div>
+    <div><a href="{{ url_for('board_index', board_id=board_id) }}" class="back-button">Back to Community Board Main Page</a></div>
+
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <script>
+        // Initialize the map
+        var map = L.map('map').setView([40.7128, -74.0060], 12); // Centered on NYC
+    
+        // Add a tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+    
+        // Load GeoJSON data
+        fetch('/geojson')
+            .then(response => response.json())
+            .then(data => {
+                console.log('GeoJSON loaded:', data); // Log the data
+
+                // Find the feature with boro_cd: "104"
+                const targetFeature = data.features.find(
+                    feature => feature.properties && feature.properties.boro_cd === "104"
+                );
+
+                if (targetFeature) {
+                    const coordinates = targetFeature.geometry.coordinates;
+
+                    // Check if it's a MultiPolygon and render lines
+                    if (targetFeature.geometry.type === "MultiPolygon") {
+                        coordinates.forEach(polygon => {
+                            // Each polygon has a set of rings (outer and possibly inner)
+                            polygon.forEach(ring => {
+                                L.polyline(
+                                    ring.map(coord => [coord[1], coord[0]]), // Flip [lon, lat] to [lat, lon]
+                                    { color: 'orange', weight: 5 }
+                                ).addTo(map);
+                            });
+                        });
+                    } else if (targetFeature.geometry.type === "Polygon") {
+                        // If it's a Polygon, draw lines for the outer ring
+                        L.polyline(
+                            coordinates[0].map(coord => [coord[1], coord[0]]),
+                            { color: 'orange', weight: 5 }
+                        ).addTo(map);
+                    }
+                } else {
+                    console.error('Feature with boro_cd: "104" not found.');
+                }
+            })
+            .catch(error => console.error('Error loading GeoJSON:', error));
+    </script>
+</body>
+</html>
