@@ -26,7 +26,7 @@ jobs:
       with:
         python-version: '3.10'
     - name: Install all necessary packages
-      run: pip install jupyter lxml pandas requests beautifulsoup4 html5lib playwright pdfminer.six pdfplumber ocrmypdf PyPDF2 doctr doctr.io google-cloud-vision
+      run: pip install jupyter lxml pandas requests beautifulsoup4 html5lib playwright pdfminer.six pdfplumber ocrmypdf PyPDF2 doctr google-cloud-vision
     - name: Install browsers
       run: playwright install
     - name: Scraping today's data
