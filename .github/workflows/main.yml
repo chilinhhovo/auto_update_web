@@ -31,6 +31,12 @@ jobs:
       run: playwright install
     - name: Scraping today's data
       run: jupyter nbconvert --to notebook --execute "Manhattan_CB2/Manhattan_CB2.ipynb" --stdout
+    - name: Scraping today's data
+      run: jupyter nbconvert --to notebook --execute "Manhattan_CB4/Manhattan_CB4.ipynb" --stdout
+    - name: Scraping today's data
+      run: jupyter nbconvert --to notebook --execute "Manhattan_CB1/Manhattan_CB1_copy.ipynb" --stdout
+    - name: Scraping today's data
+      run: jupyter nbconvert --to notebook --execute "Bronx_CB1/Bronx_CB1.ipynb" --stdout
     - name: Commit and push any changes
       run: |-
         git config user.name "Automated"
