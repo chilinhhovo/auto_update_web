@@ -1,54 +1,41 @@
+# You can name this whatever you want
 name: update
 
+# You will get an error on the automatic updates committing
+# if you do not have this line
+# You didn't need it before, which is why a lot of yml job files
+# you see will not have it (but you need it now!!!)
 permissions:
   contents: write
-
+  
+# The 'on' section is about when this is run
+# workflow_dispatch makes there be a button on GitHub to let you run it manually
+# schedule and cron make it run at certain frequencies
 on:
   workflow_dispatch:
   schedule:
     - cron: '0 */2 * * *'
-
 jobs:
   daily:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        notebook:
-          - Bronx_CB1/Bronx_CB1.ipynb
-          - Manhattan_CB1/Manhattan_CB1 copy.ipynb
-          - Manhattan_CB2/Manhattan_CB2.ipynb
-          - Manhattan_CB4/Manhattan_CB4.ipynb
     steps:
-      - name: Check out this repo
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      - name: Debug: List all files
-        run: ls -R
-
-      - name: Debug: List specific notebook directory
-        run: echo "${{ matrix.notebook }}" && ls -R $(dirname "${{ matrix.notebook }}")
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.10'
-
-      - name: Install all necessary packages
-        run: pip install jupyter lxml pandas requests beautifulsoup4 html5lib playwright pdfminer.six
-
-      - name: Install browsers
-        run: playwright install
-
-      - name: Execute notebook
-        run: jupyter nbconvert --to notebook --execute "${{ matrix.notebook }}" --stdout
-
-      - name: Commit and push any changes
-        run: |-
-          git config user.name "Automated"
-          git config user.email "actions@users.noreply.github.com"
-          git add -A
-          timestamp=$(date -u)
-          git commit -m "Latest data: ${timestamp}" || exit 0
-          git push
+    - name: Check out this repo
+      uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+    - name: Install all necessary packages
+      run: pip install jupyter lxml pandas requests beautifulsoup4 html5lib playwright pdfminer.six
+    - name: Install browsers
+      run: playwright install
+    - name: Scraping today's data
+      run: jupyter nbconvert --to notebook --execute "Manhattan_CB1.ipynb" --stdout
+    - name: Commit and push any changes
+      run: |-
+        git config user.name "Automated"
+        git config user.email "actions@users.noreply.github.com"
+        git add -A
+        timestamp=$(date -u)
+        git commit -m "Latest data: ${timestamp}" || exit 0
+        git push
