@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify
 import pandas as pd
 import json
 import openai
+from openai.error import OpenAIError
 from dotenv import load_dotenv
 import os
 import re
