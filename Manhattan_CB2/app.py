@@ -100,7 +100,7 @@ def landing_page():
 
 @app.route("/geojson")
 def geojson():
-    geojson_path = "/Users/chivo/Downloads/Foundations/HW/auto_update_web/Manhattan_CB2/static/Community Districts.geojson"
+    geojson_path = "Manhattan_CB2/static/Community Districts.geojson"
     try:
         with open(geojson_path, "r") as f:
             geojson_data = json.load(f)
