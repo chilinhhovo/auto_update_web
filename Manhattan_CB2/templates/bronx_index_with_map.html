@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manhattan Community Board 1</title>
+    <title>Bronx Community Board 1</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css">
     <style>
         body {
@@ -11,10 +11,21 @@
             margin: 0;
             font-family: AeonikTRIAL, sans-serif;
         }
-        h3, h4 {
+        h3 {
             font-size: 0.9em;
             color: #888;
-            margin: 0 30px 20px 30px;
+            margin-bottom: 20px;
+            margin-right: 30px;
+            margin-left: 30px;
+        }
+
+        h4 {
+            font-size: 0.9em;
+            font-weight: lighter;
+            color: #888;
+            margin-bottom: 20px;
+            margin-right: 30px;
+            margin-left: 30px;
         }
         #content {
             width: 50%;
@@ -26,6 +37,7 @@
             width: 45%; /* Half the screen */
             position: fixed;
             margin-top: 156px;
+            margin-right:20px ;
             right: 0;
             top: 0;
         }
@@ -36,7 +48,9 @@
         .logo {
             display: block;
             width: 200px; /* Set the logo width */
-            margin: 0 0 10px 30px;
+            text-align: left;
+            margin-left: 30px;
+            margin-bottom: 10px;
         }
         .year-group {
             margin-bottom: 10px;
@@ -49,8 +63,10 @@
         .month-entry {
             padding-bottom: 10px;
             border-bottom: 1px solid #ccc; /* Add a thin line between links */
-            margin: 0 auto;
-            width: 80%; /* Line width */
+            border-bottom-: 10px;
+            width: 50%; /* Line width set to half of the container width */
+            margin-left: auto;
+            margin-right: auto;
         }
         .month-entry a {
             text-decoration: none;
@@ -63,6 +79,7 @@
             position: fixed; /* Make the button stay in a fixed position */
             bottom: 20px; /* Place the button at the bottom of the viewport */
             right: 20px; /* Place the button on the right side of the viewport */
+            display: inline-block;
             padding: 10px 15px;
             font-size: 14px;
             color: white;
@@ -77,49 +94,48 @@
     </style>
 </head>
 <body>
+
     <div id="content">
         <img src="{{ url_for('static', filename='images/whosaidwhatlogo.png') }}" alt="Logo" class="logo">
-        <h1>Manhattan Community Board 1</h1>
-        <h3>Not all community board minutes are available because community board did not publish that monthly.</h3>
-        <h4>Each community board minute has a meeting summary and a voting summary powered by GPT.</h4>
+        <h1>Bronx Community Board 1</h1>
+        <h3>Minutes and summaries for Bronx Community Board 1</h3>
         {% for year, records in grouped_data.items() %}
-        <div class="year-group">
-            <h2>{{ year }}</h2>
-            <ul>
-                {% for record in records %}
-                <li class="month-entry">
-                    <a href="{{ url_for('get_month_content', board_id=board_id, year=year, month=record.Month_Name) }}">
-                        {{ record.Month_Name }}
-                    </a>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
+            <div class="year-group">
+                <h2>{{ year }}</h2>
+                <ul>
+                    {% for record in records %}
+                        <li class="month-entry">
+                            <a href="/{{ board_id }}/month/{{ year }}/{{ record.Month_Name }}">{{ record.Month_Name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
         {% endfor %}
     </div>
+    
     <div id="map"></div>
-    <a href="{{ url_for('board_index', board_id='manhattan-cb1') }}"class="back-button">Back to Top</a>
+    <div><a href="{{ url_for('board_index', board_id=board_id) }}" class="back-button">Back to Community Board Main Page</a></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
     <script>
         // Initialize the map
         var map = L.map('map').setView([40.7128, -74.0060], 12); // Centered on NYC
-
+    
         // Add a tile layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18,
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
-
+    
         // Load GeoJSON data
         fetch('/geojson')
             .then(response => response.json())
             .then(data => {
-                console.log('GeoJSON loaded:', data);
+                console.log('GeoJSON loaded:', data); // Log the data
 
-                // Find the feature with boro_cd: "101"
+                // Find the feature with boro_cd: "201"
                 const targetFeature = data.features.find(
-                    feature => feature.properties && feature.properties.boro_cd === "101"
+                    feature => feature.properties && feature.properties.boro_cd === "201"
                 );
 
                 if (targetFeature) {
@@ -128,6 +144,7 @@
                     // Check if it's a MultiPolygon and render lines
                     if (targetFeature.geometry.type === "MultiPolygon") {
                         coordinates.forEach(polygon => {
+                            // Each polygon has a set of rings (outer and possibly inner)
                             polygon.forEach(ring => {
                                 L.polyline(
                                     ring.map(coord => [coord[1], coord[0]]), // Flip [lon, lat] to [lat, lon]
@@ -136,13 +153,14 @@
                             });
                         });
                     } else if (targetFeature.geometry.type === "Polygon") {
+                        // If it's a Polygon, draw lines for the outer ring
                         L.polyline(
                             coordinates[0].map(coord => [coord[1], coord[0]]),
                             { color: 'orange', weight: 5 }
                         ).addTo(map);
                     }
                 } else {
-                    console.error('Feature with boro_cd: "101" not found.');
+                    console.error('Feature with boro_cd: "201" not found.');
                 }
             })
             .catch(error => console.error('Error loading GeoJSON:', error));
