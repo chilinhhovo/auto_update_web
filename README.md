@@ -31,4 +31,6 @@ Design folder:
 > Xd file.xd - Adobe XD file of website 1st design
 > XD_screenshots - photos of website 1st design
 
+Progress: 
+>Data_diary.ipynb - thoughts and brief summary of the process, majority of the time, it was error message, fix, re-run, pray, and repeat 
  
