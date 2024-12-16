@@ -18,7 +18,7 @@ app = Flask(__name__)
 # Define paths for Community Board CSVs
 CSV_PATHS = {
     "manhattan-cb1": "Manhattan_CB1/Manhattan_CB1_with_content.csv",
-    "manhattan-cb2": "Manhattan_CB2.csv",
+    "manhattan-cb2": "Manhattan_CB2/Manhattan_CB2.csv",
     "manhattan-cb4": "Manhattan_CB4/Manhattan_CB4_with_content.csv",
     "bronx-cb1": "Bronx_CB1/Bronx_CB1_with_content.csv",
 }
