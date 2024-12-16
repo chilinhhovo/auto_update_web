@@ -10,10 +10,10 @@ pdfplumber
 ocrmypdf
 doctr
 PyPDF2
-google-cloud-vision
 requests
 beautifulsoup4
 html5lib
 lxml
 playwright
 openai
+python-dotenv
