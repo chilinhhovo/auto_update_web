@@ -196,6 +196,8 @@ def get_summary(board_id="manhattan-cb1", year=None, month=None):
                 ],
             )
             return response.choices[0].message['content']
+        except openai.error.OpenAIError as e:
+            return f"OpenAI API error: {e}"
         except Exception as e:
             return f"Error generating summary: {e}"
 

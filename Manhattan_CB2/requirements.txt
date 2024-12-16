@@ -15,5 +15,5 @@ beautifulsoup4
 html5lib
 lxml
 playwright
-openai==1.0.0
+openai>=1.0.0
 python-dotenv
