@@ -11,7 +11,24 @@ Each month, every community board in NYC gathers at their respective neighbourho
 ## About the data - Data files
 Each community board has their one folder. In each folder, there is a folder for all the pdfs of the meeting minutes. 
 
+Data files: 
+>.csv - files that contain links to all pdfs from community boards
+>-with-content.csv - files that contain links and content of the pdfs after parsing through pdfplumber
+>.ipynb: jupyter notebooks for analysis
 
+PDF folder: 
+>[name]_PDFs - folders that contain PDF files of the meeting minutes 
+
+App files: 
 >app.py - Flask app that hosts all of the data
+>requirements.txt- packages that have been used to develop this 
+
+App folder: 
+>static: contains geodata, font and logo files
+>templates: contains all html files for display
+
+Design folder: 
+> Xd file.xd - Adobe XD file of website 1st design
+> XD_screenshots - photos of website 1st design
 
  
