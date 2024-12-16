@@ -17,10 +17,10 @@ app = Flask(__name__)
 
 # Define paths for Community Board CSVs
 CSV_PATHS = {
-    "manhattan-cb1": "/Users/chivo/Downloads/Foundations/HW/auto_update_web/Manhattan_CB1/static/Manhattan_CB1_with_content.csv",
-    "manhattan-cb2": "/Users/chivo/Downloads/Foundations/HW/auto_update_web/Manhattan_CB2/Manhattan_CB2.csv",
-    "manhattan-cb4": "/Users/chivo/Downloads/Foundations/HW/auto_update_web/Manhattan_CB1/static/Manhattan_CB4_with_content.csv",
-    "bronx-cb1": "/Users/chivo/Downloads/Foundations/HW/auto_update_web/Bronx_CB1/Bronx_CB1_with_content.csv",
+    "manhattan-cb1": "Manhattan_CB1/Manhattan_CB1.csv",
+    "manhattan-cb2": "Manhattan_CB2.csv",
+    "manhattan-cb4": "Manhattan_CB4/Manhattan_CB4.csv",
+    "bronx-cb1": "Bronx_CB1/Bronx_CB1.csv",
 }
 
 # Define community boards
